@@ -56,6 +56,7 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.lifecycle.process)
     implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.core)
 
     // UI
     implementation(platform(libs.androidx.compose.bom))
