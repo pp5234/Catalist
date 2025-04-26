@@ -1,5 +1,6 @@
 package com.example.catalist.cats.list
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,23 +15,44 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.catalist.cats.domain.BreedsListData
+import com.example.catalist.core.TextToChips
 
+@Preview
 @Composable
 fun BreedsListScreen(
-    data : List<BreedsListData>,
-    onBreedListClick: (id: String) -> Unit
+    data : List<BreedsListData> = listOf(BreedsListData(),BreedsListData(),BreedsListData()),
+    onBreedListClick: (id: String) -> Unit = {}
 
 ) {
-    Scaffold { padding ->
+    Scaffold (
+        topBar = {
+            SearchBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                onSearch = {string -> Log.d("String", string)})
+        }
+    ) { padding ->
         BreedsListColumn (
             modifier = Modifier
                 .padding(padding)
@@ -59,8 +81,6 @@ private fun BreedsListColumn(
     }
 }
 
-
-
 @Composable
 private fun BreedsListItem (
     data: BreedsListData,
@@ -79,7 +99,6 @@ private fun BreedsListItem (
                 .fillMaxWidth()
                 .padding(16.dp)
         ) {
-            // Centered Heading
             Text(
                 text = buildString {
                     append(data.name)
@@ -109,7 +128,7 @@ private fun BreedsListItem (
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
 
-                TemperamentChips(data.temperament, onClick)
+                TextToChips(text = data.temperament, amount = 5, delim = ',')
 
             }
 
@@ -117,13 +136,36 @@ private fun BreedsListItem (
     }
 }
 
-
 @Composable
-fun TemperamentChips(data : List<String>, onClick: () -> Unit) {
-    val colors = AssistChipDefaults.assistChipColors(labelColor = Color.White, containerColor = MaterialTheme.colorScheme.primary)
-    for (text in data.take(5)) {
-        AssistChip(colors = colors , label = {Text(text = text, style = MaterialTheme.typography.labelSmall)}, onClick = onClick)
-        }
+fun SearchBar(modifier: Modifier = Modifier,
+    onSearch: (String) -> Unit
+) {
+    var query by rememberSaveable { mutableStateOf("") }
+    TextField(
+        value = query,
+        onValueChange = { newValue -> query = newValue},
+        placeholder = { Text("Search") },
+        leadingIcon = { IconButton (onClick = { onSearch(query) }) {
+            Icon(Icons.Default.Search, contentDescription = null)
+          }},
+        trailingIcon = {
+            if (query.isNotEmpty()) {
+                IconButton(onClick = { query = "" }) {
+                    Icon(Icons.Default.Close, contentDescription = "Clear")
+                }
+            }
+        },
+        singleLine = true,
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = ImeAction.Search
+        ),
+        keyboardActions = KeyboardActions(onSearch = {onSearch(query); query = ""}),
 
-
+        modifier = modifier
+    )
 }
+
+
+
+
+

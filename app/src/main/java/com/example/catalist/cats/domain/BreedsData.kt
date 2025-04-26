@@ -4,7 +4,7 @@ data class BreedsListData (
     val id : String = "abys",
     val name: String = "Abyssinian",
     val alt: String = "",
-    val temperament: List<String> = listOf("Active", "Energetic", "Independent", " Intelligent", "Gentle", "Curious", "Playful"),
+    val temperament: String = "Active, Energetic, Independent, Intelligent, Gentle, Curious, Playful",
     val description: String = "The Abyssinian is easy to care for, and a joy to have in your home. They’re affectionate cats and love both people and other animals."
 
 )
