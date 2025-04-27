@@ -12,11 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
+import coil3.compose.SubcomposeAsyncImage
+import coil3.compose.SubcomposeAsyncImageContent
 import com.example.catalist.cats.details.BreedsDetailsScreenContract
 import com.example.catalist.cats.details.BreedsDetailsViewModel
 import com.example.catalist.cats.domain.BreedsDetailsData
@@ -158,13 +158,25 @@ private fun BreedInfo(modifier: Modifier, breed: BreedsDetailsData) {
 
 @Composable
 private fun BreedImage(modifier : Modifier = Modifier, url : String?, description: String) {
-
     if (url != null) {
-        AsyncImage(
+        SubcomposeAsyncImage(
             model = url,
             contentDescription = description,
             modifier = modifier,
-            contentScale = ContentScale.Crop
+            loading = {
+                LoadingIndicator()
+            },
+            error = {
+                Box(
+                    modifier = modifier,
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("Failed to fetch image", style = MaterialTheme.typography.bodyMedium)
+                }
+            },
+            success = {
+                SubcomposeAsyncImageContent()
+            }
         )
     } else {
         Box(
