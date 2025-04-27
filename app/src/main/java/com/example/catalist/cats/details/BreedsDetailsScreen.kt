@@ -1,3 +1,5 @@
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -12,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -23,6 +26,7 @@ import com.example.catalist.cats.domain.BreedsDetailsData
 import com.example.catalist.core.LoadingIndicator
 import com.example.catalist.core.NoDataContent
 import com.example.catalist.core.TextToChips
+import androidx.core.net.toUri
 
 
 @Composable
@@ -46,8 +50,7 @@ private fun BreedsDetailsScreen(state: BreedsDetailsScreenContract.UIState) {
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun BreedsDetailsScreenContent(
-    breed: BreedsDetailsData,
-    onWikipediaClick: () -> Unit = {}
+    breed: BreedsDetailsData
 ) {
     val scrollState = rememberScrollState()
     val borderModifier =
@@ -131,16 +134,25 @@ private fun BreedsDetailsScreenContent(
         )
         Spacer(modifier = Modifier.height(16.dp))
         // Wiki
-        if (breed.wikipediaUrl != null) {
-            Button(
-                onClick = onWikipediaClick,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            ) {
-                Text("View on Wikipedia")
-            }
-        }
+        if (breed.wikipediaUrl.isNotEmpty())
+            WikiButton(breed.wikipediaUrl)
+
         Spacer(modifier = Modifier.height(16.dp))
     }
+}
+
+@Composable
+private fun ColumnScope.WikiButton(wikipediaUrl: String) {
+    val context = LocalContext.current
+        Button(
+            onClick = {
+                val intent = Intent(Intent.ACTION_VIEW, wikipediaUrl.toUri())
+                context.startActivity(intent)
+            },
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        ) {
+            Text("View on Wikipedia")
+        }
 }
 
 @Composable
