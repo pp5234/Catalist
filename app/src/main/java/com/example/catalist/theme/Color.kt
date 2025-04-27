@@ -1,4 +1,4 @@
-package com.example.catalist.cats.theme
+package com.example.catalist.theme
 
 import androidx.compose.ui.graphics.Color
 
