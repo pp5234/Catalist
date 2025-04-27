@@ -1,3 +1,4 @@
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -9,22 +10,39 @@ import androidx.compose.material3.*
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.example.catalist.cats.details.BreedsDetailsScreenContract
+import com.example.catalist.cats.details.BreedsDetailsViewModel
 import com.example.catalist.cats.domain.BreedsDetailsData
 import com.example.catalist.core.TextToChips
 
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
-@Preview
 @Composable
-fun BreedsDetailsScreenContent(breed: BreedsDetailsData = BreedsDetailsData(), onWikipediaClick: () -> Unit = {}) {
+fun BreedsDetailsScreen (viewModel: BreedsDetailsViewModel) {
+    val uiState = viewModel.state.collectAsState()
+    Log.d("BreedId", uiState.value.breedId)
+    BreedsDetailsScreen(uiState.value)
+}
+
+@Composable
+private fun BreedsDetailsScreen(state: BreedsDetailsScreenContract.UIState) {
+    if (state.data != null)
+        BreedsDetailsScreenContent(breed = state.data)
+}
+
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
+@Composable
+private fun BreedsDetailsScreenContent(
+    breed: BreedsDetailsData,
+    onWikipediaClick: () -> Unit = {}
+) {
     val scrollState = rememberScrollState()
     val borderModifier =
         if (breed.isRare) {
