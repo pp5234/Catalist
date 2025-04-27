@@ -1,5 +1,4 @@
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -143,7 +142,7 @@ private fun BreedsDetailsScreenContent(
 
 @Composable
 private fun ColumnScope.WikiButton(wikipediaUrl: String) {
-    val context = LocalContext.current
+        val context = LocalContext.current
         Button(
             onClick = {
                 val intent = Intent(Intent.ACTION_VIEW, wikipediaUrl.toUri())
