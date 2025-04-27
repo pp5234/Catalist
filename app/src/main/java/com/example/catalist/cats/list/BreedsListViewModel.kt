@@ -2,16 +2,18 @@ package com.example.catalist.cats.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.catalist.cats.domain.dummyBreedList
-import kotlinx.coroutines.delay
+import com.example.catalist.cats.domain.BreedsListData
+import com.example.catalist.cats.domain.IBreedsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 
+@HiltViewModel
 class BreedsListViewModel @Inject constructor(
+    private val breedsRepository: IBreedsRepository
 ) : ViewModel() {
 
     val _state = MutableStateFlow(BreedsListScreenContract.UiState())
@@ -24,10 +26,11 @@ class BreedsListViewModel @Inject constructor(
 
     private fun loadBreedsList() = viewModelScope.launch {
         try {
-            delay(2.seconds)
-            setState { copy (loading = false, data = dummyBreedList) }
+            val data = breedsRepository.fetchAllBreeds()
+            setState { copy (loading = false, data = data ?: emptyList()) }
         } catch (e : Exception) {
             setState { copy (loading = false, error = e) }
         }
+
     }
 }

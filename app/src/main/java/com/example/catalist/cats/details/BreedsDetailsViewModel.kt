@@ -1,22 +1,20 @@
 package com.example.catalist.cats.details
 
-
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.catalist.cats.domain.dummyBreedDetailsMap
+import com.example.catalist.cats.domain.IBreedsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.getAndUpdate
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.time.Duration.Companion.seconds
 
 @HiltViewModel
 class BreedsDetailsViewModel @Inject constructor(
-    savedState : SavedStateHandle
+    savedState : SavedStateHandle,
+    private val breedsRepository: IBreedsRepository
 ) : ViewModel() {
 
     val breedId = savedState.get<String>("breedId") ?: error("BreedId not found")
@@ -31,11 +29,12 @@ class BreedsDetailsViewModel @Inject constructor(
 
     private fun loadBreedDetails() = viewModelScope.launch {
         try {
-            delay(2.seconds)
-            val breed = dummyBreedDetailsMap[breedId]
-            setState { copy(loading = false, data = breed)}
+            val data = breedsRepository.fetchBreedById(breedId)
+            setState { copy(loading = false, data = data)}
         } catch (e : Exception) {
             setState { copy(loading = false, error = e)}
         }
+
+
     }
 }
