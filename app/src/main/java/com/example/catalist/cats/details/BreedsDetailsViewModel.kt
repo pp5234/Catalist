@@ -4,7 +4,7 @@ package com.example.catalist.cats.details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.catalist.cats.domain.BreedsDetailsData
+import com.example.catalist.cats.domain.dummyBreedDetailsMap
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,7 +21,7 @@ class BreedsDetailsViewModel @Inject constructor(
 
     val breedId = savedState.get<String>("breedId") ?: error("BreedId not found")
 
-    val _state = MutableStateFlow(BreedsDetailsScreenContract.UIState(breedId = breedId))
+    val _state = MutableStateFlow(BreedsDetailsScreenContract.UIState())
     val state = _state.asStateFlow()
     private fun setState(reducer: BreedsDetailsScreenContract.UIState.() -> BreedsDetailsScreenContract.UIState) = _state.getAndUpdate(reducer)
 
@@ -30,7 +30,12 @@ class BreedsDetailsViewModel @Inject constructor(
     }
 
     private fun loadBreedDetails() = viewModelScope.launch {
-        delay(2.seconds)
-        setState { copy(breedId = breedId, loading = false, data = BreedsDetailsData()) }
+        try {
+            delay(2.seconds)
+            val breed = dummyBreedDetailsMap[breedId]
+            setState { copy(loading = false, data = breed)}
+        } catch (e : Exception) {
+            setState { copy(loading = false, error = e)}
+        }
     }
 }

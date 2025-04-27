@@ -2,7 +2,7 @@ package com.example.catalist.cats.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.catalist.cats.domain.BreedsListData
+import com.example.catalist.cats.domain.dummyBreedList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -23,7 +23,11 @@ class BreedsListViewModel @Inject constructor(
     }
 
     private fun loadBreedsList() = viewModelScope.launch {
-        delay(2.seconds)
-        setState { copy (loading = false, data = listOf(BreedsListData(),BreedsListData(),BreedsListData(),BreedsListData())) }
+        try {
+            delay(2.seconds)
+            setState { copy (loading = false, data = dummyBreedList) }
+        } catch (e : Exception) {
+            setState { copy (loading = false, error = e) }
+        }
     }
 }

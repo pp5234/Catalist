@@ -35,6 +35,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import com.example.catalist.cats.domain.BreedsListData
+import com.example.catalist.core.LoadingIndicator
+import com.example.catalist.core.NoDataContent
 import com.example.catalist.core.TextToChips
 
 
@@ -61,7 +63,13 @@ private fun BreedsListScreen(
                 onSearch = {string -> Log.d("String", string)})
         }
     ) { padding ->
-        if (state.data.isNotEmpty() || state.error == null) {
+        if (state.loading)
+            LoadingIndicator()
+        else if (state.error != null)
+            NoDataContent(modifier = Modifier.padding(padding), text = "Error while fetching data:\n${state.error.message}")
+        else if (state.data.isEmpty())
+            NoDataContent(modifier = Modifier.padding(padding), text = "No breeds to list")
+        else {
             BreedsListColumn (
                 modifier = Modifier
                     .padding(padding)

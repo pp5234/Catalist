@@ -1,4 +1,3 @@
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -21,19 +20,26 @@ import coil3.compose.AsyncImage
 import com.example.catalist.cats.details.BreedsDetailsScreenContract
 import com.example.catalist.cats.details.BreedsDetailsViewModel
 import com.example.catalist.cats.domain.BreedsDetailsData
+import com.example.catalist.core.LoadingIndicator
+import com.example.catalist.core.NoDataContent
 import com.example.catalist.core.TextToChips
 
 
 @Composable
 fun BreedsDetailsScreen (viewModel: BreedsDetailsViewModel) {
     val uiState = viewModel.state.collectAsState()
-    Log.d("BreedId", uiState.value.breedId)
     BreedsDetailsScreen(uiState.value)
 }
 
 @Composable
 private fun BreedsDetailsScreen(state: BreedsDetailsScreenContract.UIState) {
-    if (state.data != null)
+    if (state.loading)
+        LoadingIndicator()
+    else if (state.error != null)
+        NoDataContent("Error when fetching details: ${state.error}")
+    else if (state.data == null)
+        NoDataContent("No details about this breed")
+    else
         BreedsDetailsScreenContent(breed = state.data)
 }
 
@@ -79,7 +85,7 @@ private fun BreedsDetailsScreenContent(
         //Info
         BreedInfo(
             modifier = Modifier
-                .width(250.dp)
+                .width(300.dp)
                 .padding(bottom = 16.dp, top = 4.dp),
             breed = breed
         )
@@ -120,7 +126,7 @@ private fun BreedsDetailsScreenContent(
         //BehavioralTraits
         BreedBehavioralTraits(
             textModifier = Modifier.padding(bottom = 8.dp),
-            indicatorModifier = Modifier.width(250.dp),
+            indicatorModifier = Modifier.width(300.dp),
             breed = breed
         )
         Spacer(modifier = Modifier.height(16.dp))
