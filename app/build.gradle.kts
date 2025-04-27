@@ -75,8 +75,8 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     // Hilt
-    ksp(libs.hilt.android.compiler)
-    implementation(libs.hilt.android)
+    ksp(libs.bundles.hilt.compiler)
+    implementation(libs.bundles.hilt)
 
     // OkHTTP
     implementation(libs.okhttp)

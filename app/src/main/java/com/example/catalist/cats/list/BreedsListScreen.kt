@@ -27,22 +27,30 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.catalist.cats.domain.BreedsListData
 import com.example.catalist.core.TextToChips
 
-@Preview
+
 @Composable
 fun BreedsListScreen(
-    data : List<BreedsListData> = listOf(BreedsListData(),BreedsListData(),BreedsListData()),
-    onBreedListClick: (id: String) -> Unit = {}
+    viewModel : BreedsListViewModel,
+    onBreedListClick: (id : String) -> Unit
+) {
+    val uiState = viewModel.state.collectAsState()
+    BreedsListScreen(uiState.value, onBreedListClick)
+}
 
+@Composable
+private fun BreedsListScreen(
+    state : BreedsListScreenContract.UiState,
+    onBreedListClick: (id: String) -> Unit
 ) {
     Scaffold (
         topBar = {
@@ -53,13 +61,15 @@ fun BreedsListScreen(
                 onSearch = {string -> Log.d("String", string)})
         }
     ) { padding ->
-        BreedsListColumn (
-            modifier = Modifier
-                .padding(padding)
-                .background(MaterialTheme.colorScheme.background),
-            data = data,
-            onBreedListClick = onBreedListClick
-        )
+        if (state.data.isNotEmpty() || state.error == null) {
+            BreedsListColumn (
+                modifier = Modifier
+                    .padding(padding)
+                    .background(MaterialTheme.colorScheme.background),
+                data = state.data,
+                onBreedListClick = onBreedListClick
+            )
+        }
     }
 }
 
