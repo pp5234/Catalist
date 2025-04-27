@@ -2,7 +2,6 @@ package com.example.catalist.cats.list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.catalist.cats.domain.BreedsListData
 import com.example.catalist.cats.domain.IBreedsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow

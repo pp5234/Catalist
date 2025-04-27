@@ -34,7 +34,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
-import com.example.catalist.cats.domain.BreedsListData
+import com.example.catalist.cats.list.model.BreedsListUiModel
 import com.example.catalist.core.LoadingIndicator
 import com.example.catalist.core.NoDataContent
 import com.example.catalist.core.TextToChips
@@ -84,7 +84,7 @@ private fun BreedsListScreen(
 @Composable
 private fun BreedsListColumn(
     modifier : Modifier,
-    data: List<BreedsListData>,
+    data: List<BreedsListUiModel>,
     onBreedListClick: (id: String) -> Unit
 ) {
     LazyColumn (
@@ -101,7 +101,7 @@ private fun BreedsListColumn(
 
 @Composable
 private fun BreedsListItem (
-    data: BreedsListData,
+    data: BreedsListUiModel,
     onClick: () -> Unit
 ) {
     ElevatedCard(

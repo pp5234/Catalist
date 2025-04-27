@@ -21,11 +21,11 @@ import coil3.compose.SubcomposeAsyncImage
 import coil3.compose.SubcomposeAsyncImageContent
 import com.example.catalist.cats.details.BreedsDetailsScreenContract
 import com.example.catalist.cats.details.BreedsDetailsViewModel
-import com.example.catalist.cats.domain.BreedsDetailsData
 import com.example.catalist.core.LoadingIndicator
 import com.example.catalist.core.NoDataContent
 import com.example.catalist.core.TextToChips
 import androidx.core.net.toUri
+import com.example.catalist.cats.details.model.BreedsDetailsUiModel
 
 
 @Composable
@@ -49,7 +49,7 @@ private fun BreedsDetailsScreen(state: BreedsDetailsScreenContract.UIState) {
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun BreedsDetailsScreenContent(
-    breed: BreedsDetailsData
+    breed: BreedsDetailsUiModel
 ) {
     val scrollState = rememberScrollState()
     val borderModifier =
@@ -155,7 +155,7 @@ private fun ColumnScope.WikiButton(wikipediaUrl: String) {
 }
 
 @Composable
-private fun BreedInfo(modifier: Modifier, breed: BreedsDetailsData) {
+private fun BreedInfo(modifier: Modifier, breed: BreedsDetailsUiModel) {
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -237,7 +237,7 @@ fun BreedBehaviorTraitIndicator(
 
 @Composable
 private fun BreedBehavioralTraits(
-    breed: BreedsDetailsData,
+    breed: BreedsDetailsUiModel,
     textModifier : Modifier = Modifier,
     indicatorModifier : Modifier = Modifier
 ) {

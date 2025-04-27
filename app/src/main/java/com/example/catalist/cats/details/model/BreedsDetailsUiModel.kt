@@ -1,15 +1,6 @@
-package com.example.catalist.cats.domain
+package com.example.catalist.cats.details.model
 
-data class BreedsListData (
-    val id : String,
-    val name: String,
-    val alt: String,
-    val temperament: String,
-    val description: String
-
-)
-
-data class BreedsDetailsData(
+data class BreedsDetailsUiModel (
     val id: String,
     val name: String,
     val description: String ,
