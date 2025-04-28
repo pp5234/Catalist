@@ -2,8 +2,8 @@ package com.example.catalist.cats.di
 
 import com.example.catalist.cats.domain.IBreedsRepository
 import com.example.catalist.cats.repository.BreedsRepository
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
@@ -12,8 +12,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object BreedsModule {
 
-    @Provides
-    @Singleton
-    fun bindsBreedsRepository(): IBreedsRepository = BreedsRepository()
+    @Module
+    @InstallIn(SingletonComponent::class)
+    abstract class RepositoryModule {
+        @Binds @Singleton
+        abstract fun bindBreedsRepository(
+            impl: BreedsRepository
+        ): IBreedsRepository
+    }
+
 
 }
