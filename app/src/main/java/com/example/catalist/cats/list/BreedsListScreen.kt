@@ -122,7 +122,7 @@ private fun BreedsListItem (
             Text(
                 text = buildString {
                     append(data.name)
-                        if (data.alt.isNotEmpty()) {
+                        if (data.alt != "") {
                             append(" (${data.alt})")
                         }
                     },

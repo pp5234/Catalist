@@ -34,7 +34,7 @@ fun asBreedsListUiModel(data : BreedsApiModel) : BreedsListUiModel {
     return BreedsListUiModel (
         id = data.id,
         name = data.name ?: "",
-        alt = data.name ?: "",
+        alt = data.alt ?: "",
         description = data.description ?: "",
         temperament =  data.temperament ?: ""
     )
