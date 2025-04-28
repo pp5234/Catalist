@@ -1,6 +1,7 @@
 package com.example.catalist.cats.list
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.catalist.cats.api.mapper.asBreedsListUiModel
@@ -17,9 +18,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BreedsListViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val breedsRepository: IBreedsRepository
 ) : ViewModel() {
 
+    val query = savedStateHandle.get<String>("q") ?: ""
     val _state = MutableStateFlow(BreedsListScreenContract.UiState())
     val state = _state.asStateFlow()
     private fun setState(reducer: BreedsListScreenContract.UiState.() -> BreedsListScreenContract.UiState) = _state.getAndUpdate(reducer)
@@ -32,8 +35,12 @@ class BreedsListViewModel @Inject constructor(
         setState { copy (loading = true)}
         try {
             val data : List<BreedsListUiModel>
+            Log.d("BreedsListViewModel", query)
             withContext(Dispatchers.IO) {
-                data = breedsRepository.fetchAllBreeds().map { asBreedsListUiModel(it) }
+                data = if (query == "")
+                    breedsRepository.fetchAllBreeds().map { asBreedsListUiModel(it) }
+                else
+                    breedsRepository.fetchBreedsByQuery(query).map { asBreedsListUiModel(it) }
             }
             setState { copy (loading = false, data = data) }
         } catch (e : Exception) {

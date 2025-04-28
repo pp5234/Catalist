@@ -43,16 +43,18 @@ import com.example.catalist.core.TextToChips
 @Composable
 fun BreedsListScreen(
     viewModel : BreedsListViewModel,
-    onBreedListClick: (id : String) -> Unit
+    onBreedListClick: (id : String) -> Unit,
+    onSearch: (String) -> Unit
 ) {
     val uiState = viewModel.state.collectAsState()
-    BreedsListScreen(uiState.value, onBreedListClick)
+    BreedsListScreen(uiState.value, onBreedListClick, onSearch)
 }
 
 @Composable
 private fun BreedsListScreen(
     state : BreedsListScreenContract.UiState,
-    onBreedListClick: (id: String) -> Unit
+    onBreedListClick: (id: String) -> Unit,
+    onSearch: (String) -> Unit
 ) {
     Scaffold (
         topBar = {
@@ -60,7 +62,7 @@ private fun BreedsListScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                onSearch = {string -> Log.d("String", string)})
+                onSearch = onSearch )
         }
     ) { padding ->
         if (state.loading)
@@ -75,7 +77,7 @@ private fun BreedsListScreen(
                     .padding(padding)
                     .background(MaterialTheme.colorScheme.background),
                 data = state.data,
-                onBreedListClick = onBreedListClick
+                onBreedListClick = onBreedListClick,
             )
         }
     }
@@ -85,7 +87,7 @@ private fun BreedsListScreen(
 private fun BreedsListColumn(
     modifier : Modifier,
     data: List<BreedsListUiModel>,
-    onBreedListClick: (id: String) -> Unit
+    onBreedListClick: (id: String) -> Unit,
 ) {
     LazyColumn (
         modifier = modifier
@@ -163,7 +165,7 @@ fun SearchBar(modifier: Modifier = Modifier,
         value = query,
         onValueChange = { newValue -> query = newValue},
         placeholder = { Text("Search") },
-        leadingIcon = { IconButton (onClick = { onSearch(query) }) {
+        leadingIcon = { IconButton (onClick = { onSearch(query)}) {
             Icon(Icons.Default.Search, contentDescription = null)
           }},
         trailingIcon = {
@@ -177,7 +179,7 @@ fun SearchBar(modifier: Modifier = Modifier,
         keyboardOptions = KeyboardOptions.Default.copy(
             imeAction = ImeAction.Search
         ),
-        keyboardActions = KeyboardActions(onSearch = {onSearch(query); query = ""}),
+        keyboardActions = KeyboardActions(onSearch = {onSearch(query)}),
 
         modifier = modifier
     )
