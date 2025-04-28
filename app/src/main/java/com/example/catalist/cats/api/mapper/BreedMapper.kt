@@ -3,6 +3,7 @@ package com.example.catalist.cats.api.mapper
 import com.example.catalist.cats.api.model.BreedsApiModel
 import com.example.catalist.cats.details.model.BreedsDetailsUiModel
 import com.example.catalist.cats.list.model.BreedsListUiModel
+import com.example.catalist.core.truncateAtLastComma
 
 fun asBreedsDetailsData(data : BreedsApiModel, imageUrl: String?) : BreedsDetailsUiModel {
     return BreedsDetailsUiModel(
@@ -35,7 +36,7 @@ fun asBreedsListUiModel(data : BreedsApiModel) : BreedsListUiModel {
         id = data.id,
         name = data.name ?: "",
         alt = data.alt ?: "",
-        description = data.description ?: "",
+        description = truncateAtLastComma(data.description ?: "", maxLength = 250),
         temperament =  data.temperament ?: ""
     )
 }
