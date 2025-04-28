@@ -1,7 +1,6 @@
 package com.example.catalist.cats.details.model
 
 data class BreedsDetailsUiModel (
-    val id: String,
     val name: String,
     val description: String ,
     val origin: String,
@@ -20,7 +19,7 @@ data class BreedsDetailsUiModel (
     val socialNeeds: Int,
     val strangerFriendly: Int,
     val vocalisation: Int,
-    val isRare: Boolean,
-    val wikipediaUrl: String = "",
-    val imageUrl: String = ""
+    val isRare: Int,
+    val wikipediaUrl: String,
+    val imageUrl: String
 )
