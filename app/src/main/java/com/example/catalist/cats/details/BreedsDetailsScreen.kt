@@ -53,7 +53,7 @@ private fun BreedsDetailsScreenContent(
 ) {
     val scrollState = rememberScrollState()
     val borderModifier =
-        if (breed.isRare) {
+        if (breed.isRare == 1) {
             Modifier.border(
                 width = 8.dp,
                 color = MaterialTheme.colorScheme.primary,
@@ -169,7 +169,7 @@ private fun BreedInfo(modifier: Modifier, breed: BreedsDetailsUiModel) {
 
 @Composable
 private fun BreedImage(modifier : Modifier = Modifier, url : String?, description: String) {
-    if (url != null) {
+    if (url != "") {
         SubcomposeAsyncImage(
             model = url,
             contentDescription = description,
