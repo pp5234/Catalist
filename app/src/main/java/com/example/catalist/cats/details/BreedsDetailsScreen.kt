@@ -209,33 +209,6 @@ private fun BreedInfoColumn(title: String, value: String, modifier: Modifier = M
 }
 
 @Composable
-fun BreedBehaviorTraitIndicator(
-    label: String,
-    level: Int,
-    maxLevel: Int = 5
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier
-                .weight(1f)
-                .padding(end = 8.dp)
-        )
-
-        LinearProgressIndicator(
-            progress = { level / maxLevel.toFloat() },
-            modifier = Modifier.weight(1f)
-        )
-    }
-}
-
-@Composable
 private fun BreedBehavioralTraits(
     breed: BreedsDetailsUiModel,
     textModifier : Modifier = Modifier,
@@ -261,3 +234,31 @@ private fun BreedBehavioralTraits(
         BreedBehaviorTraitIndicator(label = "Stranger Friendly", level = breed.strangerFriendly)
     }
 }
+
+@Composable
+private fun BreedBehaviorTraitIndicator(
+    label: String,
+    level: Int,
+    maxLevel: Int = 5
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyMedium,
+            modifier = Modifier
+                .weight(1f)
+                .padding(end = 8.dp)
+        )
+
+        LinearProgressIndicator(
+            progress = { level / maxLevel.toFloat() },
+            modifier = Modifier.weight(1f)
+        )
+    }
+}
+

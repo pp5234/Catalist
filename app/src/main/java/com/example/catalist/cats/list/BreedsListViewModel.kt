@@ -35,7 +35,6 @@ class BreedsListViewModel @Inject constructor(
         setState { copy (loading = true)}
         try {
             val data : List<BreedsListUiModel>
-            Log.d("BreedsListViewModel", query)
             withContext(Dispatchers.IO) {
                 data = if (query == "")
                     breedsRepository.fetchAllBreeds().map { asBreedsListUiModel(it) }

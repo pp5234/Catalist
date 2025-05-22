@@ -1,6 +1,5 @@
 package com.example.catalist.cats.list
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -122,7 +121,7 @@ private fun BreedsListItem (
             Text(
                 text = buildString {
                     append(data.name)
-                        if (data.alt != "") {
+                        if (data.alt.trim().isNotEmpty()) {
                             append(" (${data.alt})")
                         }
                     },
@@ -148,7 +147,7 @@ private fun BreedsListItem (
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
 
-                TextToChips(text = data.temperament, amount = 5, delim = ',')
+                TextToChips(text = data.temperament, amount = 5, delim = ',', onClick = onClick)
 
             }
 
@@ -166,7 +165,7 @@ fun SearchBar(modifier: Modifier = Modifier,
         onValueChange = { newValue -> query = newValue},
         placeholder = { Text("Search") },
         leadingIcon = { IconButton (onClick = { onSearch(query)}) {
-            Icon(Icons.Default.Search, contentDescription = null)
+            Icon(Icons.Default.Search, contentDescription = "Search")
           }},
         trailingIcon = {
             if (query.isNotEmpty()) {

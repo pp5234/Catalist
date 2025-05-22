@@ -33,7 +33,7 @@ fun asBreedsDetailsData(data : BreedsApiModel, imageUrl: String?) : BreedsDetail
 
 fun asBreedsListUiModel(data : BreedsApiModel) : BreedsListUiModel {
     return BreedsListUiModel (
-        id = data.id,
+        id = data.id ?: "",
         name = data.name ?: "",
         alt = data.alt ?: "",
         description = truncateAtLastComma(data.description ?: "", maxLength = 250),

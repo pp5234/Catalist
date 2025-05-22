@@ -11,7 +11,7 @@ data class Weight(
 
 @Serializable
 data class BreedsApiModel(
-    val id : String,
+    val id : String? = "",
     val name: String? = "",
     @SerialName("alt_names")
     val alt: String? = "",
